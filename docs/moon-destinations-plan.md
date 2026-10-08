@@ -1,0 +1,26 @@
+# Six destinations and a reason to explore
+
+Spec: docs/MOON-STOPS.md, now approved for implementation, including the optional recommendations.
+
+## Global Constraints
+
+- Preserve the current lunar toybox visual style, spherical driving, camera, robot, Manrope/Inter, shadcn components, Motion, Lucide, audio, and visitors.
+- No entry gate. Direction keys start movement. All content also accessible without driving.
+- Six primary stops: Project Hangar (work), Mission Control (about), Résumé Pod (resume), Lunar Arcade (arcade), Experiment Lab (lab), Signal Tower (contact). The far-side lookout is a bonus, not a seventh primary stop.
+- User says personal details can stay empty; they will add them later. Use only confirmed identity Nikhil Raj and verified GitHub https://github.com/nikhiilraj. Controller will provide an authorized existing backend résumé PDF. Do not invent projects, professional history, contacts, testimonials, or availability.
+- Only Nikhil's Cloudflare account 063db0a1d331d97326b384d4c6847366. Do not modify deployment guard or publish from an implementer. No new dependencies required.
+- Keep changes in the existing isolated project checkout, branch feat/moon-destinations. Granular, truthful commits; do not rewrite prior history.
+
+## Task 1: Implement the complete six-stop exploration experience
+
+Read docs/MOON-STOPS.md and relevant src modules. Implement cohesively, with these requirements:
+
+1. Central typed stop metadata used by world, navigation, panels, and persistent stamps. Six distinct physical landmarks with sensible collision footprints and reachable approach distance. Preserve existing hangar/banner/lab as appropriate; add distinctive observatory, résumé kiosk, coral arcade, antenna. Spread stops so visiting the far side is useful without crowding spawn. The existing far-side sculpture becomes the lookout. Place props tangent to arbitrary sphere normals. Keep static batching correct and animated indicators independent.
+2. Globe map opened by M or visible button, showing all six labels and current rover position. Selecting a stop offers both Open content and Quick travel; route guidance/target beacon too if feasible (controller already announced route beacons, so implement this). Track progress/distance toward chosen target, allow cancel. Teleport to a validated collision-free approach with correct tangent orientation, camera frame and cleared input. No fake distance accumulation. Map includes bonus lookout. Hidden hemisphere markers must be distinguishable. Map is keyboard and touch accessible; simple mode offers every stop without requiring WebGL.
+3. Proximity E / touch button with correct stop action; entering/dialog opening clears movement. Optional local visited stamps, tolerant of corrupt or blocked localStorage. Stamps never lock content. Visit by physical approach/travel, not simply opening a menu. All six approachable. Provide visited state and count, optional reset scoped to stamps only.
+4. Polished per-stop panels. Work: existing real Lunar Toybox project and honest future-work empty state. About: editable story/experience empty state plus field-notes shelf empty state. Résumé: controller-provided local PDF path /resume/nikhil-raj-backend.pdf, readable browser preview with download/open links and a mobile fallback. If file not yet copied, wire reference and controller will add it. Contact: verified GitHub, editable safe contact fields and truthful empty state for missing ones. Lab: existing UFO signal plus a real interactive orbit sandbox (speed/tilt or orbit controls) and a small experiment rotation/selection, no fabricated projects.
+5. Fully playable Snake and Snakes & Ladders inside arcade. Use pure tested rule modules and UI components. Snake has keyboard arrows/WASD and touch directions, start/pause/restart/exit, score/local best, collision and no reverse bugs. Snakes & Ladders can be solo with best roll count, explicit rules, real dice rolls, serpentine 100-square board and visible ladder/snake transitions, exact finish handling. Pause/reset/exit, local best. Stop timers on exit, blur/hidden and dialog close; prevent arrow keys from leaking to rover; restore useful focus. No unnecessary RNG mocks in production. Use accessible buttons and labels, readable on 390px viewport.
+6. Far-side lookout photo mode. Allow camera orbit/zoom while rover is frozen, hide HUD, exit affordance and export an actual rendered lunar postcard PNG with Nikhil Raj branding. Capture inside rendered frame if needed for WebGPU/WebGL canvas. Handle export failures. Controller will visually verify export.
+7. Add meaningful tests for pure rules, navigation/collision-safe quick travel at every stop, stamp validation/persistence. Existing audio/movement tests stay passing. Build passes. Document editing real content, navigation/game controls, stamp storage, résumé source boundary and new feature status in README/docs. Controller will handle screenshot refresh, publish and browser QA after review.
+
+Use a few cohesive granular commits (rules/navigation, world/UI, docs as appropriate). You own implementation and tests; do not dispatch any subagents, do not push/deploy. Report full details, tests and concerns to the assigned report file. Return only status, commit SHAs, concise test summary and concerns.
