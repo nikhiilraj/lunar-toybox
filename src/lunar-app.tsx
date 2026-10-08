@@ -204,6 +204,13 @@ export function LunarApp() {
     };
   }, [flat]);
   useEffect(() => {
+    if (!panel) return;
+    const frame = requestAnimationFrame(() => {
+      dialogHeading.current?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [panel]);
+  useEffect(() => {
     paused.current = !!panel || flat || photo;
     game.current?.setPaused(paused.current);
   }, [panel, flat, photo]);
@@ -431,7 +438,7 @@ export function LunarApp() {
           )}
           {simple && (
             <section className="simple-view">
-              <BlurFade>
+              <BlurFade blur="0px" duration={0.2}>
                 <span className="eyebrow">NIKHIL RAJ / PERSONAL PORTFOLIO</span>
                 <h1>
                   A small world.
@@ -672,7 +679,7 @@ export function LunarApp() {
                                 : "Your soundscape, controls, and small personal touches."}
                 </DialogDescription>
               </DialogHeader>
-              <div className="panel-body">
+              <div className="panel-body" key={panel}>
                 {panel === "map" && (
                   <MoonMap
                     normal={state.normal}
@@ -823,7 +830,8 @@ function AudioSettings({
         <strong>Soundscape</strong>
       </div>
       <p className="audio-description">
-        A soundtrack for wandering. Sounds by ElevenLabs.
+        A soundtrack for wandering. Sounds by {" "}
+        <a href="https://elevenlabs.io/" target="_blank" rel="noreferrer">elevenlabs.io</a>.
       </p>
       {(
         [

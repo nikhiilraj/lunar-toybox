@@ -85,8 +85,7 @@ export function Arcade() {
                   ref={selector}
                   variant="outline"
                   onClick={() => setGame("snake")}
-                  aria-label="Snake"
-                >
+                    >
                   Play Snake <ArrowRight />
                 </Button>
               </div>
@@ -133,8 +132,7 @@ export function Arcade() {
                 <Button
                   variant="outline"
                   onClick={() => setGame("ladders")}
-                  aria-label="Snakes & Ladders"
-                >
+                    >
                   Play Snakes & Ladders <ArrowRight />
                 </Button>
               </div>
