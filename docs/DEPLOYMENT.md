@@ -31,3 +31,18 @@ Published 8 October 2026 to `nikhil-lunar-toybox.nikhil-063.workers.dev` in Nikh
 - README images were captured from the deployed site.
 
 The repository history is a current-date initial import grouped by subsystem, followed by publication documentation. It does not fabricate earlier development dates. Generated build output and local credentials are excluded from Git.
+
+## Six-stop release verification
+
+Published 8 October 2026 to the same Nikhil-owned Worker. Cloudflare version: `3d280f9b-c091-4d00-9cd6-e44e4635e637`.
+
+- 33 automated tests pass; the TypeScript/Vite production build passes. Existing library directive/sourcemap and chunk-size warnings remain.
+- All six destinations and the bonus lookout were reached through the map, with proximity prompts and correct arrival orientation. Route distance changes with driving and cancellation works.
+- Stamps and the Snake best score survive reload; resetting stamps preserves game scores. All content and games remain accessible in simple mode, and route guidance clears when switching to it.
+- Snake scoring, wall collision, restart, pause, touch steering and rover input isolation were checked. Snakes & Ladders dice movement and pause were checked; exact finish, overshoot and transition rules have automated coverage.
+- Desktop and 390px-wide mobile layouts were inspected. Orbit sliders have named keyboard-accessible controls.
+- Actual PNG downloads were opened and visually checked from the default renderer and forced WebGL fallback. Photo mode permits camera orbit while rover coordinates remain unchanged. This is not exhaustive GPU/device certification.
+- Live first-key movement, the map, arcade travel and game UI were checked without reported runtime errors. The live index, script, style, original résumé PDF and preview match the local build byte-for-byte.
+- README overview/map screenshots were refreshed from production. The postcard image is a real local production-preview export.
+
+The résumé is the user-authorized original `Nikhil-Raj-Backend -Resume.pdf`; it remains unchanged. Other personal sections remain empty for later editing.
