@@ -85,7 +85,7 @@ export function Arcade() {
                   ref={selector}
                   variant="outline"
                   onClick={() => setGame("snake")}
-                    >
+                >
                   Play Snake <ArrowRight />
                 </Button>
               </div>
@@ -132,7 +132,7 @@ export function Arcade() {
                 <Button
                   variant="outline"
                   onClick={() => setGame("ladders")}
-                    >
+                >
                   Play Snakes & Ladders <ArrowRight />
                 </Button>
               </div>

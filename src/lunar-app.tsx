@@ -830,8 +830,11 @@ function AudioSettings({
         <strong>Soundscape</strong>
       </div>
       <p className="audio-description">
-        A soundtrack for wandering. Sounds by {" "}
-        <a href="https://elevenlabs.io/" target="_blank" rel="noreferrer">elevenlabs.io</a>.
+        A soundtrack for wandering. Sounds by{" "}
+        <a href="https://elevenlabs.io/" target="_blank" rel="noreferrer">
+          elevenlabs.io
+        </a>
+        .
       </p>
       {(
         [

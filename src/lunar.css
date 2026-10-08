@@ -79,7 +79,9 @@ button:disabled {
   cursor: default;
 }
 @layer base {
-  a { color: inherit; }
+  a {
+    color: inherit;
+  }
 }
 button:focus-visible,
 a:focus-visible,
@@ -1398,7 +1400,10 @@ kbd {
   color: var(--secondary-ink);
   margin: 9px 0 22px;
 }
-.audio-description a { text-decoration: underline; text-underline-offset: 3px; }
+.audio-description a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .audio-channel {
   border-top: 1px solid var(--line);
   padding: 16px 0;
