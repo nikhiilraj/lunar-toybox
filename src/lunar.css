@@ -2052,6 +2052,12 @@ kbd {
     grid-column: 3;
   }
 }
+@media (max-width: 360px) {
+  .nav-pill .nav-item {
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *:before,
