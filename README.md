@@ -115,7 +115,7 @@ npm run deploy
 
 Deployment is deliberately pinned to **Nikhil’s Cloudflare account** in `wrangler.jsonc`. The deployment script rejects a conflicting account ID, including one supplied through the environment. It does not select the first account returned by Cloudflare.
 
-A ready-to-enable [GitHub Actions workflow](docs/ci/validate.yml) runs tests and a production build on pushes and pull requests. It is stored as a template because the publishing credential does not have GitHub’s `workflow` scope. Local verification passes all 31 tests and the production build. Deployments are explicit; no Cloudflare credential is stored in this repository. See [deployment notes](docs/DEPLOYMENT.md).
+A ready-to-enable [GitHub Actions workflow](docs/ci/validate.yml) runs tests and a production build on pushes and pull requests. It is stored as a template because the publishing credential does not have GitHub’s `workflow` scope. Local verification passes all 33 tests and the production build. Deployments are explicit; no Cloudflare credential is stored in this repository. See [deployment notes](docs/DEPLOYMENT.md).
 
 ## Sound and attribution
 
@@ -124,6 +124,8 @@ The soundscape uses nine assets generated with **[elevenlabs.io](https://elevenl
 The background bed was generated through Sound Effects; the dedicated Music API was unavailable on the generation account. Generated audio remains subject to ElevenLabs’ terms, including the free-tier attribution and non-commercial restrictions. It is not offered under a separate open-source audio license. See [audio details](docs/AUDIO.md) and [asset credits](THIRD_PARTY.md).
 
 ## Six destinations, plus a view
+
+![Globe map with six destinations, quick travel, route beacons and optional passport stamps](docs/images/moon-map.png)
 
 Project Hangar, Mission Control, Résumé Pod, Lunar Arcade, Experiment Lab and Signal Tower are implemented. Their landmarks span both hemispheres; the map connects them and optional passport stamps reward physical visits. The far-side lookout adds a rendered lunar postcard export.
 
