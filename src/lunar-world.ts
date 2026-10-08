@@ -3,7 +3,7 @@ import {FontLoader} from 'three/addons/loaders/FontLoader.js';
 import {TTFLoader} from 'three/addons/loaders/TTFLoader.js';
 import {box,cylinder,sphere,ring,material,text3D,createRobot} from './assets';
 import {MOON_RADIUS,UP,type Obstacle} from './lunar-motion';
-import type {AreaId} from './content';
+import {destinations,normalOf,destination,navigationObstacles,type DestinationId} from './destinations';
 import {batchStatic} from './batch';
 
 export function seeded(seed=71){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
@@ -18,7 +18,8 @@ export function surfaceHeight(n:T.Vector3){
  // The home clearing is gently graded so wheels, doors and pads meet the ground.
  const a=n.angleTo(UP);const flat=1-T.MathUtils.smoothstep(a,.18,.34);return MOON_RADIUS+h*(1-flat*.85);
 }
-function anchor(parent:T.Object3D,x:number,z:number,height=0){const g=new T.Group();const n=new T.Vector3(x,MOON_RADIUS,z).normalize();g.position.copy(n).multiplyScalar(surfaceHeight(n)+height);g.quaternion.setFromUnitVectors(UP,n);parent.add(g);return{g,n};}
+function anchorNormal(parent:T.Object3D,n:T.Vector3,height=0){const g=new T.Group();g.position.copy(n).multiplyScalar(surfaceHeight(n)+height);g.quaternion.setFromUnitVectors(UP,n);parent.add(g);return{g,n};}
+function anchor(parent:T.Object3D,x:number,z:number,height=0){return anchorNormal(parent,new T.Vector3(x,MOON_RADIUS,z).normalize(),height);}
 function lightMaterial(color:number,intensity=1){return new T.MeshStandardMaterial({color,emissive:color,emissiveIntensity:intensity,roughness:.45});}
 export async function createLunarWorld(scene:T.Scene){
  const font=new FontLoader().parse(await new TTFLoader().loadAsync('/assets/manrope-bold.ttf'));
@@ -51,7 +52,7 @@ export async function createLunarWorld(scene:T.Scene){
  cylinder(shop,.024,.024,1.3,-1.82,3.05,-.65,cream,8);sphere(shop,.07,-1.82,3.72,-.65,cream,2);
  const dish=new T.Mesh(new T.SphereGeometry(.37,24,12,0,Math.PI*2,0,.92),material(cream));dish.position.set(1.64,2.72,.2);dish.rotation.z=-.5;shop.add(dish);
  for(const x of [-1.06,-.41,.24,.89,1.54])box(shop,.53,.06,.67,x,.08,1.97,0xc8c2b2,.04);
- const dock=anchor(land,4.1,.15);const dg=dock.g;dg.scale.setScalar(1.13);
+ const dock=anchorNormal(land,normalOf(destination('lab')));const dg=dock.g;dg.scale.setScalar(1.13);
  cylinder(dg,1.0,1.06,.16,0,.09,.27,cream,64);cylinder(dg,.83,.85,.08,0,.21,.27,0xc4b9a8,64);ring(dg,.73,.025,0,.257,.27,0xffdb98).material=lightMaterial(0xf6c77f,1.8);
  box(dg,1.36,1.86,.42,0,1.0,-.39,coral,.31);box(dg,1.0,1.52,.06,0,1.03,-.154,dark,.22);
  box(dg,.63,.1,.12,0,.42,-.08,mint,.035);
@@ -63,11 +64,24 @@ export async function createLunarWorld(scene:T.Scene){
  box(bg,4.6,.42,.69,0,.19,0,0x8f9088,.15);text3D(bg,font,'NIKHIL RAJ',.64,0,.36,.19,cream,.18);
  text3D(bg,font,'A SMALL WORLD OF IDEAS',.105,0,.14,.37,0xe0d9ca,.009);
  // A small experiment on the far hemisphere rewards a full lap.
- const far=new T.Group();const farNormal=new T.Vector3(.2,-.93,-.31).normalize();far.position.copy(farNormal).multiplyScalar(surfaceHeight(farNormal));far.quaternion.setFromUnitVectors(UP,farNormal);land.add(far);
+ const far=new T.Group();const farNormal=normalOf(destination('lookout'));far.position.copy(farNormal).multiplyScalar(surfaceHeight(farNormal));far.quaternion.setFromUnitVectors(UP,farNormal);land.add(far);
  cylinder(far,1.2,1.3,.15,0,.08,0,cream,48);const sculpture=new T.Group();sculpture.position.y=1;far.add(sculpture);
  sphere(sculpture,.27,0,0,0,coral,2);for(let i=0;i<3;i++){const m=ring(sculpture,.6+i*.15,.027,0,0,0,i===1?mint:cream);m.rotation.set(i*.7,.8+i,i*.8);}
  text3D(far,font,'THE OTHER SIDE',.19,0,.16,.95,dark,.02);
- const obstacles:Obstacle[]=[{normal:workshop.n,radius:2.8},{normal:banner.n,radius:1.65},{normal:dock.n,radius:.65}];
+ // New landmarks all sit on local tangent frames, including the far hemisphere.
+ const control=anchorNormal(land,normalOf(destination('about'))).g;
+ cylinder(control,1.45,1.6,.3,0,.12,0,cream,48);const dome=sphere(control,1.3,0,.38,0,mint,3);dome.scale.y=.75;
+ box(control,1.35,.52,.12,0,.64,1.12,0xffd391,.14);box(control,.4,.7,.4,.5,1.45,0,dark,.06);const telescope=cylinder(control,.16,.24,1.3,.5,1.85,.2,cream,24);telescope.rotation.x=.9;
+ const kiosk=anchorNormal(land,normalOf(destination('resume'))).g;
+ cylinder(kiosk,.8,.94,.18,0,.09,0,cream,40);box(kiosk,1.05,1.7,.42,0,.98,0,0xa4b3cc,.18);box(kiosk,.76,1.05,.05,0,1.12,.235,dark,.08);for(let i=0;i<4;i++)box(kiosk,.51,.045,.02,0,1.4-i*.17,.27,cream,.01);box(kiosk,.4,.06,.18,0,.49,.3,mint,.02);
+ const arcade=anchorNormal(land,normalOf(destination('arcade'))).g;
+ cylinder(arcade,1.55,1.7,.22,0,.1,0,cream,48);const shell=sphere(arcade,1.5,0,.52,0,coral,3);shell.scale.y=.85;box(arcade,.85,1.15,.15,0,.65,1.38,dark,.24);for(const x of [-.9,.9]){const glow=sphere(arcade,.19,x,.9,1.05,cream,2);glow.material=lightMaterial(0xffd79c,1.4);}text3D(arcade,font,'PLAY',.28,0,1.48,1.03,cream,.03);
+ const tower=anchorNormal(land,normalOf(destination('contact'))).g;
+ cylinder(tower,.74,.88,.25,0,.12,0,mint,40);cylinder(tower,.1,.21,3.3,0,1.7,0,cream,16);const antenna=ring(tower,.55,.065,0,3.15,0,coral);antenna.rotation.x=Math.PI/2;cylinder(tower,.035,.035,1.4,0,3.6,0,dark,8);
+ const indicators=new T.Group();land.add(indicators);const beaconMeshes:Partial<Record<DestinationId,T.Mesh>>={};
+ for(const stop of destinations){const g=anchorNormal(indicators,normalOf(stop)).g;const marker=ring(g,stop.radius+.12,.035,0,.12,0,new T.Color(stop.color).getHex());marker.material=new T.MeshStandardMaterial({color:stop.color,emissive:stop.color,emissiveIntensity:.5,transparent:true,opacity:.32,depthWrite:false});beaconMeshes[stop.id]=marker;const pole=cylinder(g,.025,.025,.8,0,1.8,-stop.radius,cream,8);pole.material=lightMaterial(new T.Color(stop.color).getHex(),.7);text3D(g,font,stop.short.toUpperCase(),.19,0,2.25,-stop.radius,cream,.018);}
+ const routeBeacon=new T.Group();routeBeacon.visible=false;indicators.add(routeBeacon);const beam=cylinder(routeBeacon,.045,.045,4,0,3,0,cream,12);beam.material=new T.MeshStandardMaterial({color:0xffdf9b,emissive:0xffdf9b,emissiveIntensity:1,transparent:true,opacity:.85});ring(routeBeacon,.65,.065,0,.3,0,cream).material=lightMaterial(0xffdf9b,2);
+ const obstacles:Obstacle[]=navigationObstacles();
  const rockGeo=new T.IcosahedronGeometry(1,0);const rocks=new T.InstancedMesh(rockGeo,material(0xaca89f),370);const dummy=new T.Object3D();let count=0;
  while(count<370){const n=unit();if(obstacles.some(o=>n.angleTo(o.normal)*MOON_RADIUS<o.radius+1.1)||n.angleTo(new T.Vector3(.5,9.5,2.9).normalize())<.14)continue;const scale=.075+Math.pow(random(),3)*.4;dummy.position.copy(n).multiplyScalar(surfaceHeight(n)+scale*.2);dummy.quaternion.setFromUnitVectors(UP,n);dummy.rotateY(random()*6);dummy.scale.set(scale*(.7+random()),scale*.55,scale);dummy.updateMatrix();rocks.setMatrixAt(count++,dummy.matrix);}
  rocks.castShadow=true;rocks.receiveShadow=true;land.add(rocks);
@@ -83,8 +97,8 @@ export async function createLunarWorld(scene:T.Scene){
  const ufo=new T.Group();ufo.visible=false;scene.add(ufo);const hull=sphere(ufo,.82,0,0,0,0x91a7a7,3);hull.scale.set(1,.21,1);const glass=sphere(ufo,.42,0,.12,0,0x94c9ba,3);glass.scale.y=.72;
  ring(ufo,.63,.055,0,-.1,0,0xdcb880).material=lightMaterial(0xffd38f,1.3);for(let i=0;i<8;i++){const a=i*Math.PI/4;sphere(ufo,.045,Math.cos(a)*.7,-.045,Math.sin(a)*.7,0xffe4a9,1).material=lightMaterial(0xffd38f,2);}
  const trailGeo=new T.PlaneGeometry(.085,.13);trailGeo.rotateX(-Math.PI/2);const trails=new T.InstancedMesh(trailGeo,new T.MeshBasicMaterial({color:0x6e6961,transparent:true,opacity:.2,depthWrite:false,side:T.DoubleSide}),700);trails.count=0;land.add(trails);
- batchStatic(land,new Set([moon,robot.root,sculpture]));batchStatic(robot.body,new Set([robot.light,robot.antenna]));for(const wheel of robot.wheels)batchStatic(wheel);
- const destinations:Record<AreaId,T.Vector3>={work:workshop.n,lab:dock.n,about:banner.n};
- return{land,moon,robot,earth,globe,ufo,asteroids,sculpture,trails,obstacles,destinations,font};
+ batchStatic(land,new Set([moon,robot.root,sculpture,indicators]));batchStatic(robot.body,new Set([robot.light,robot.antenna]));for(const wheel of robot.wheels)batchStatic(wheel);
+ const destinationNormals=Object.fromEntries(destinations.map(s=>[s.id,normalOf(s)])) as Record<DestinationId,T.Vector3>;
+ return{land,moon,robot,earth,globe,ufo,asteroids,sculpture,trails,obstacles,destinations:destinationNormals,beaconMeshes,routeBeacon,font};
 }
 export type LunarWorld=Awaited<ReturnType<typeof createLunarWorld>>;

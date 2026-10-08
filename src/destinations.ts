@@ -1,5 +1,5 @@
 import {Vector3} from 'three';
-import {MOON_RADIUS,UP} from './lunar-motion';
+import {MOON_RADIUS,UP,type LunarMotion,type Obstacle} from './lunar-motion';
 export type StopId='work'|'about'|'resume'|'arcade'|'lab'|'contact';
 export type DestinationId=StopId|'lookout';
 export interface Destination{id:DestinationId;label:string;short:string;action:string;color:string;normal:readonly [number,number,number];radius:number;range:number;}
@@ -17,4 +17,9 @@ export const destination=(id:DestinationId)=>destinations.find(s=>s.id===id)!;
 export const normalOf=(stop:Destination)=>new Vector3(...stop.normal).normalize();
 export const distanceTo=(normal:Vector3,stop:Destination)=>normal.angleTo(normalOf(stop))*MOON_RADIUS;
 /** Search a ring beyond every footprint, retaining an unobstructed approach to the chosen stop. */
-export function approachFor(stop:Destination){const n=normalOf(stop);let tangent=UP.clone().projectOnPlane(n);if(tangent.lengthSq()<.01)tangent=new Vector3(0,0,1).projectOnPlane(n);tangent.normalize();for(let i=0;i<72;i++){const offset=tangent.clone().applyAxisAngle(n,i*Math.PI/36);const normal=n.clone().multiplyScalar(Math.cos((stop.radius+.85)/MOON_RADIUS)).addScaledVector(offset,Math.sin((stop.radius+.85)/MOON_RADIUS)).normalize();if(destinations.every(other=>distanceTo(normal,other)>other.radius+.55))return{normal,heading:n.clone().projectOnPlane(normal).normalize()};}throw Error(`No safe approach for ${stop.label}`);}
+export const nameMonument={normal:new Vector3(-3.7,MOON_RADIUS,2.65).normalize(),radius:1.65};
+export const navigationObstacles=():Obstacle[]=>[...destinations.map(s=>({normal:normalOf(s),radius:s.radius})),nameMonument];
+export function approachFor(stop:Destination,obstacles:Obstacle[]=navigationObstacles()){const n=normalOf(stop);let tangent=UP.clone().projectOnPlane(n);if(tangent.lengthSq()<.01)tangent=new Vector3(0,0,1).projectOnPlane(n);tangent.normalize();for(let i=0;i<72;i++){const offset=tangent.clone().applyAxisAngle(n,i*Math.PI/36);const normal=n.clone().multiplyScalar(Math.cos((stop.radius+.85)/MOON_RADIUS)).addScaledVector(offset,Math.sin((stop.radius+.85)/MOON_RADIUS)).normalize();if(obstacles.every(other=>normal.angleTo(other.normal)*MOON_RADIUS>other.radius+.55))return{normal,heading:n.clone().projectOnPlane(normal).normalize()};}throw Error(`No safe approach for ${stop.label}`);}
+
+/** Teleport is deliberately separate from locomotion and preserves the driven-distance counter. */
+export function quickTravel(motion:LunarMotion,stop:Destination,obstacles:Obstacle[]=navigationObstacles()){const approach=approachFor(stop,obstacles);if(obstacles.some(o=>approach.normal.angleTo(o.normal)*MOON_RADIUS<=o.radius+.5))throw Error('Travel approach is obstructed');motion.stop();motion.normal.copy(approach.normal);motion.heading.copy(approach.heading);return approach;}
