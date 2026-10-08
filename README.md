@@ -6,7 +6,7 @@
 
 A playable 3D portfolio on a tiny moon. Drive a curious robot, explore the entire sphere, and follow a few ideas into space.
 
-[Explore the moon](https://nikhil-lunar-toybox.nikhil-063.workers.dev) · [Run locally](#run-locally) · [Controls](#controls) · [Six destinations](docs/MOON-STOPS.md)
+[Explore the moon](https://nikhil-lunar-toybox.nikhil-063.workers.dev) · [Run locally](#run-locally) · [Controls](#controls) · [Six destinations](docs/MOON-STOPS.md) · [Design system](docs/DESIGN-SYSTEM.md)
 
 ![Three.js](https://img.shields.io/badge/Three.js-3D_world-111111?logo=threedotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
@@ -28,6 +28,14 @@ There is no “enter” button. Your first movement wakes the robot and eases th
 - **Considerate defaults.** Music starts off. Audio unlocks with an interaction. Sound preferences persist, hidden tabs pause playback, and motion follows the device preference.
 
 This build includes six destinations, a supplied backend résumé, two playable arcade games, interactive orbit sketches, optional visit stamps and a far-side postcard camera. Additional projects, biography, experience, field notes and unconfirmed contact details intentionally remain empty.
+
+## A considered interface
+
+The moon sits behind a quiet floating navigation bar. Content opens in light, neutral panels with Manrope throughout, clear card hierarchy, subtle violet selection states and consistent actions. The interface uses free shadcn/ui and Radix foundations, Magic UI reveals, and Motion; the [reference study and CARP rules](docs/DESIGN-SYSTEM.md) explain the design decisions.
+
+![Selected work — image-led project card and the new neutral interface](docs/images/interface-work.png)
+
+All six portfolio stops, the map, arcade, experiments, résumé, contact and settings share the same design system. Mobile panels scroll internally while their heading and return action stay visible. Desktop games put controls beside the board. Original résumé documents retain their supplied formatting.
 
 ## Controls
 
@@ -87,7 +95,8 @@ src/
   visitor-flight.ts    Randomized spacecraft paths
   audio-mix.ts         Sound states, gains and transitions
   audio.ts             Playback, gesture unlock and saved preferences
-  lunar-app.tsx        Portfolio panels and controls
+  lunar-app.tsx        World, audio, panel and focus coordination
+  portfolio-panels.tsx Work, profile, résumé, contact and lab card compositions
   destinations.ts     Typed stops, footprints and collision-safe quick travel
   destination-ui.tsx  Accessible globe map and interactive orbit sketches
   arcade-rules.ts     Pure Snake and Snakes & Ladders rules
@@ -102,7 +111,7 @@ scripts/               Model export and guarded deployment
 tests/                 Focused behavior checks
 ```
 
-Edit `src/content.ts` for identity and contact details, and `src/lunar-app.tsx` for project cards, experience and field notes. Unconfigured contact links are intentionally omitted. The supplied résumé is preserved unchanged; its statements are not used to fill biography or experience automatically. Update its PDF and preview together. Optional visit stamps and game records are stored locally and tolerate blocked storage. See [editing, storage and source boundaries](docs/MOON-STOPS.md). The optional `nikhil-bot.glb` is an interchange export; regenerate it with `npm run export:robot`.
+Edit `src/content.ts` for identity and contact details, and `src/portfolio-panels.tsx` for project cards, experience and field notes. Unconfigured contact links are intentionally omitted. The supplied résumé is preserved unchanged; its statements are not used to fill biography or experience automatically. Update its PDF and preview together. Optional visit stamps and game records are stored locally and tolerate blocked storage. See [editing, storage and source boundaries](docs/MOON-STOPS.md). The optional `nikhil-bot.glb` is an interchange export; regenerate it with `npm run export:robot`.
 
 Diagnostic routes: `?debug=1` exposes read-only world/audio data, `?renderer=webgl` selects the fallback renderer, `?quality=low` lowers rendering cost, and `?flat=1` opens the simple portfolio.
 
