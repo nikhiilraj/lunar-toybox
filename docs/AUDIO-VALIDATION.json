@@ -1,0 +1,146 @@
+[
+  {
+    "file": "engine-drive.mp3",
+    "decoded": true,
+    "duration": 7.88,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 1
+  },
+  {
+    "file": "engine-drive.ogg",
+    "decoded": true,
+    "duration": 7.9065,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 1
+  },
+  {
+    "file": "engine-idle.mp3",
+    "decoded": true,
+    "duration": 5.88,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 1
+  },
+  {
+    "file": "engine-idle.ogg",
+    "decoded": true,
+    "duration": 5.8865,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 1
+  },
+  {
+    "file": "engine-rev.mp3",
+    "decoded": true,
+    "duration": 1.36,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 1
+  },
+  {
+    "file": "engine-rev.ogg",
+    "decoded": true,
+    "duration": 1.3665,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 1
+  },
+  {
+    "file": "engine-start.mp3",
+    "decoded": true,
+    "duration": 2.4,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 1
+  },
+  {
+    "file": "engine-start.ogg",
+    "decoded": true,
+    "duration": 2.4065,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 1
+  },
+  {
+    "file": "moon-music.mp3",
+    "decoded": true,
+    "duration": 29.88,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 2
+  },
+  {
+    "file": "moon-music.ogg",
+    "decoded": true,
+    "duration": 29.8865,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 2
+  },
+  {
+    "file": "ufo-approach.mp3",
+    "decoded": true,
+    "duration": 7.0,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 1
+  },
+  {
+    "file": "ufo-approach.ogg",
+    "decoded": true,
+    "duration": 7.0065,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 1
+  },
+  {
+    "file": "ufo-depart.mp3",
+    "decoded": true,
+    "duration": 7.0,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 1
+  },
+  {
+    "file": "ufo-depart.ogg",
+    "decoded": true,
+    "duration": 7.0065,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 1
+  },
+  {
+    "file": "ufo-hover.mp3",
+    "decoded": true,
+    "duration": 6.88,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 1
+  },
+  {
+    "file": "ufo-hover.ogg",
+    "decoded": true,
+    "duration": 6.8865,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 1
+  },
+  {
+    "file": "void-ambience.mp3",
+    "decoded": true,
+    "duration": 23.88,
+    "codec_name": "mp3",
+    "sample_rate": "44100",
+    "channels": 2
+  },
+  {
+    "file": "void-ambience.ogg",
+    "decoded": true,
+    "duration": 23.9065,
+    "codec_name": "opus",
+    "sample_rate": "48000",
+    "channels": 2
+  }
+]
